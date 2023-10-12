@@ -16,6 +16,8 @@ export const env = createEnv({
     NEXTAUTH_SECRET: z.string().nonempty(),
     GOOGLE_CLIENT_ID: z.string().nonempty(),
     GOOGLE_CLIENT_SECRET: z.string().nonempty(),
+    ADMIN_EMAIL: z.string().nonempty(),
+    ADMIN_OPENAI_API_KEY: z.string().nonempty(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
@@ -24,6 +26,8 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    ADMIN_OPENAI_API_KEY: process.env.ADMIN_OPENAI_API_KEY,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });

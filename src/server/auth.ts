@@ -76,6 +76,10 @@ export async function requireSession() {
 export async function requireOpenAiApiKey(): Promise<string> {
   const session = await requireSession();
 
+  if (session.user.email === env.ADMIN_EMAIL) {
+    return env.ADMIN_OPENAI_API_KEY;
+  }
+
   // get user's openai api key from database
   const { openAiApiKey: userOpenAiApiKey } =
     await prismaClient.user.findUniqueOrThrow({
