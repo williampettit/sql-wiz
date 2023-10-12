@@ -10,12 +10,10 @@ type ProvidersProps = {
 
 export function Providers(props: ProvidersProps) {
   return (
-    <>
-      <SessionProvider>
-        {props.children}
+    <SessionProvider>
+      {props.children}
 
-        <Toaster />
-      </SessionProvider>
-    </>
+      <Toaster />
+    </SessionProvider>
   );
 }

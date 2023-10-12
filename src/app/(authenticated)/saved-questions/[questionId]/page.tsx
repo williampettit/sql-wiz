@@ -1,3 +1,5 @@
+import { type Metadata } from "next/types";
+
 import { splitSentences } from "@/lib/utils";
 
 import { getQuestionData } from "@/server/actions/get-question-data";
@@ -5,10 +7,14 @@ import { getQuestionData } from "@/server/actions/get-question-data";
 import { DeleteQuestionDialog } from "@/components/delete-question-dialog";
 import { FavoriteQuestionDialog } from "@/components/favorite-question-dialog";
 import { HiddenAnswer } from "@/components/hidden-answer";
-import { HiddenExplanation } from "@/components/hidden-explanation";
 import { Page } from "@/components/page";
 import { QuestionHint } from "@/components/question-hint";
+import { Revealable } from "@/components/revealable";
 import { Badge } from "@/components/ui/badge";
+
+export const metadata: Metadata = {
+  title: "Question",
+};
 
 type QuestionPageProps = {
   params: {
@@ -83,7 +89,9 @@ export default async function QuestionPage(props: QuestionPageProps) {
 
         <div className="col-span-6">
           <h2 className="font-bold">Explanation</h2>
-          <HiddenExplanation explanation={explanation} />
+          <Revealable>
+            <p className="whitespace-pre-line">{splitSentences(explanation)}</p>
+          </Revealable>
         </div>
 
         <div className="col-span-6">
@@ -91,29 +99,6 @@ export default async function QuestionPage(props: QuestionPageProps) {
           <HiddenAnswer answer={answer} />
         </div>
       </div>
-
-      {/* <div className="flex flex-col space-y-8">
-        <Separator />
-
-        <div className="flex flex-col space-y-2">
-          {hints.length > 0 ? (
-            hints.map((hint, idx) => (
-              <QuestionHint key={hint} idx={idx} hint={hint} />
-            ))
-          ) : (
-            <p className="text-sm italic text-muted-foreground">
-              No hints were automatically generated for this question, most
-              likely because the AI deemed it too simple.
-            </p>
-          )}
-        </div>
-
-        <Separator />
-
-        <HiddenExplanation explanation={explanation} />
-
-        <HiddenAnswer answer={answer} />
-      </div> */}
     </Page>
   );
 }

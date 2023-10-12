@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useSession } from "next-auth/react";
-
 import { cn } from "@/lib/utils";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LogoText } from "@/components/logo-text";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+
+import { SideNavUserMenu } from "./side-nav-user-menu";
 
 const SIDE_NAV_ITEMS = [
   {
@@ -39,39 +39,18 @@ const SIDE_NAV_ITEMS = [
   },
 ];
 
-export function SideNav() {
+type SideNavProps = {
+  name: string;
+  image: string;
+};
+
+export function SideNav(props: SideNavProps) {
   const pathname = usePathname();
-  const session = useSession();
 
   return (
-    <div
-      className="
-        flex
-        w-64
-        min-w-[260px]
-        flex-col
-        justify-between
-        border-r
-        bg-accent
-        p-4
-      "
-    >
+    <div className="flex w-64 min-w-[260px] flex-col justify-between border-r bg-accent p-4">
       <div className="flex flex-col space-y-4">
-        <Link
-          href="/"
-          className="
-            p-2
-            text-center
-            text-4xl
-            font-black
-            italic
-            text-sky-500
-            transition
-            hover:text-sky-400
-          "
-        >
-          sql-wiz
-        </Link>
+        <LogoText className="p-2" />
 
         <Separator />
 
@@ -81,17 +60,7 @@ export function SideNav() {
               <Button
                 variant="link"
                 className={cn(
-                  `
-                    text-md
-                    flex
-                    h-12
-                    cursor-pointer
-                    flex-row
-                    items-center
-                    justify-center
-                    text-center
-                    text-accent-foreground
-                  `,
+                  "text-md flex h-12 cursor-pointer flex-row items-center justify-center text-center text-accent-foreground",
                   {
                     "font-bold italic text-black": item.exact
                       ? pathname === item.href
@@ -106,16 +75,7 @@ export function SideNav() {
         </div>
       </div>
 
-      <div className="flex flex-row items-center space-x-2">
-        <Avatar>
-          <AvatarImage src={session.data?.user?.image ?? undefined} />
-          <AvatarFallback />
-        </Avatar>
-
-        <span className="font-medium">
-          {session.data?.user?.name ?? session.data?.user?.email ?? "Unknown"}
-        </span>
-      </div>
+      <SideNavUserMenu name={props.name} image={props.image} />
     </div>
   );
 }

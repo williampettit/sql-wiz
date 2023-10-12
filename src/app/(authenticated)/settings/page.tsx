@@ -1,9 +1,15 @@
+import { type Metadata } from "next/types";
+
 import { requireSession } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
 
 import { Page } from "@/components/page";
 
 import { SettingsForm } from "./form";
+
+export const metadata: Metadata = {
+  title: "Settings",
+};
 
 export default async function SettingsPage() {
   const session = await requireSession();

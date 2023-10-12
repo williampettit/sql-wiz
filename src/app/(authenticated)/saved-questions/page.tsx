@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { type Metadata } from "next/types";
 
 import { getClassesForDifficulty } from "@/lib/utils";
 
@@ -7,6 +8,10 @@ import { getAllQuestionData } from "@/server/actions/get-question-data";
 import { Page } from "@/components/page";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export const metadata: Metadata = {
+  title: "Saved Questions",
+};
 
 export default async function SavedQuestionsPage() {
   const questions = await getAllQuestionData();

@@ -37,7 +37,7 @@ type MockQuestionGeneratorFormProps = {
   initialValues: Partial<MockQuestionGeneratorFormValues>;
 };
 
-export function MockQuestionGeneratorForm(
+export function QuestionGeneratorForm(
   props: MockQuestionGeneratorFormProps,
 ) {
   const router = useRouter();

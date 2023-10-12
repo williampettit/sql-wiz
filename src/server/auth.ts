@@ -29,6 +29,12 @@ declare module "next-auth" {
 export const nextAuthOptions: NextAuthOptions = {
   secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prismaClient),
+  session: { strategy: "database" },
+  pages: {
+    signIn: "/auth/signin",
+    signOut: "/auth/signout",
+    error: "/auth/error",
+  },
   callbacks: {
     async session({ session, user }) {
       return {
@@ -39,10 +45,6 @@ export const nextAuthOptions: NextAuthOptions = {
         },
       };
     },
-  },
-  session: {
-    // strategy: "jwt",
-    strategy: "database",
   },
   providers: [
     GoogleProvider({

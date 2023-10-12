@@ -8,14 +8,14 @@ export default async function Layout({ children }: LayoutProps) {
   const session = await getServerSessionWrapper();
 
   if (!session) {
-    redirect("/auth");
+    redirect("/auth/signin");
   }
 
   return (
     <div className="flex h-screen w-screen flex-row">
-      <SideNav />
+      <SideNav name={session.user.name} image={session.user.image} />
 
-      <div className="flex-1 overflow-y-auto p-8">{children}</div>
+      <div className="flex-1 overflow-y-auto p-10">{children}</div>
     </div>
   );
 }

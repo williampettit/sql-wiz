@@ -7,7 +7,10 @@ import { inter } from "@/fonts";
 import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
-  title: "sql-wiz",
+  title: {
+    template: "%s — sql-wiz",
+    default: "sql-wiz",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps) {
