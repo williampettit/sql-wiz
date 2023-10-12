@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { useSession } from "next-auth/react";
 
@@ -40,7 +40,6 @@ const SIDE_NAV_ITEMS = [
 ];
 
 export function SideNav() {
-  const router = useRouter();
   const pathname = usePathname();
   const session = useSession();
 
@@ -78,31 +77,31 @@ export function SideNav() {
 
         <div className="flex flex-col space-y-2">
           {SIDE_NAV_ITEMS.map((item) => (
-            <Button
-              key={item.href}
-              variant="link"
-              onClick={() => router.push(item.href)}
-              className={cn(
-                `
-                  text-md
-                  flex
-                  h-12
-                  cursor-pointer
-                  flex-row
-                  items-center
-                  justify-center
-                  text-center
-                  text-accent-foreground
-                `,
-                {
-                  "font-bold italic text-black": item.exact
-                    ? pathname === item.href
-                    : pathname.startsWith(item.href),
-                },
-              )}
-            >
-              {item.label}
-            </Button>
+            <Link key={item.href} href={item.href}>
+              <Button
+                variant="link"
+                className={cn(
+                  `
+                    text-md
+                    flex
+                    h-12
+                    cursor-pointer
+                    flex-row
+                    items-center
+                    justify-center
+                    text-center
+                    text-accent-foreground
+                  `,
+                  {
+                    "font-bold italic text-black": item.exact
+                      ? pathname === item.href
+                      : pathname.startsWith(item.href),
+                  },
+                )}
+              >
+                {item.label}
+              </Button>
+            </Link>
           ))}
         </div>
       </div>
