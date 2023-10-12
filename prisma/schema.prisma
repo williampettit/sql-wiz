@@ -1,0 +1,105 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id String @id @default(nanoid())
+
+  // nextauth info
+  name          String?   @db.VarChar(255)
+  image         String?
+  email         String?   @unique @db.VarChar(255)
+  emailVerified DateTime?
+  accounts      Account[]
+  sessions      Session[]
+
+  //
+  questions MockQuestion[]
+
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // optional openai info
+  openAiApiKey String?
+}
+
+model MockQuestion {
+  id String @id @default(nanoid())
+
+  title       String
+  concept     String
+  difficulty  String
+  question    String
+  answer      String
+  hints       String[]
+  tables      String[]
+  columns     String[]
+  explanation String
+
+  isGenerated Boolean
+  isFavorite  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationship to user
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
+
+model Account {
+  id                       String  @id @default(nanoid())
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationship to user
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(nanoid())
+  expires      DateTime
+  sessionToken String   @unique
+
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationship to user
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

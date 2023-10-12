@@ -1,0 +1,4 @@
+{
+  "prettier.prettierPath": "./node_modules/prettier/index.cjs",
+  "prettier.configPath": "./prettier.config.js",
+}
