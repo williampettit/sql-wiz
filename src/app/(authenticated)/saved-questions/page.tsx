@@ -18,7 +18,7 @@ export default async function SavedQuestionsPage() {
     >
       <div className="flex flex-col space-y-4">
         {questions.map((question) => (
-          <Link href={`/saved-questions/${question.id}`}>
+          <Link key={question.id} href={`/saved-questions/${question.id}`}>
             <Card>
               <CardHeader>
                 <CardTitle className="line-clamp-1">
