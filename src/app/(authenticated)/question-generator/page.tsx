@@ -1,4 +1,4 @@
-import { type Metadata } from "next/types";
+import { type Metadata } from "next";
 
 import { Page } from "@/components/page";
 
@@ -20,7 +20,7 @@ export default function QuestionGeneratorPage(
   return (
     <Page title="Question Generator" description="Generate a mock question.">
       <QuestionGeneratorForm
-        initialValues={{
+        defaultValues={{
           concept: props.searchParams.concept,
         }}
       />

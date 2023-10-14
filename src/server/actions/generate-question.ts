@@ -5,36 +5,33 @@ import { revalidatePath } from "next/cache";
 import OpenAI from "openai";
 
 import {
-  MOCK_QUESTION_DIFFICULTIES,
-  type MockQuestionGeneratorFormValues,
-  mockQuestionGeneratorFormSchema,
-  mockQuestionGeneratorResponseSchema,
+  QUESTION_DIFFICULTIES,
+  type QuestionGeneratorFormValues,
+  questionGeneratorFormSchema,
+  questionGeneratorResponseSchema,
 } from "@/schemas/generate-question-schema";
 
 import { requireOpenAiApiKey, requireSession } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
 
-export async function generateQuestion(
-  inputData: MockQuestionGeneratorFormValues,
-) {
-  const parsedInputData = mockQuestionGeneratorFormSchema.safeParse(inputData);
+export async function generateQuestion(inputData: QuestionGeneratorFormValues) {
+  //
+  const session = await requireSession();
+  const userOpenAiApiKey = await requireOpenAiApiKey();
+
+  const parsedInputData = questionGeneratorFormSchema.safeParse(inputData);
 
   if (!parsedInputData.success) {
     throw new Error(parsedInputData.error.message);
   }
 
-  const session = await requireSession();
-
   // create openai client with user's api key
-  const userOpenAiApiKey = await requireOpenAiApiKey();
-  const openaiClient = new OpenAI({
-    apiKey: userOpenAiApiKey,
-  });
+  const openaiClient = new OpenAI({ apiKey: userOpenAiApiKey });
 
   // format prompt
   const systemPrompt = [
     "You are an AI assistant that helps people learn SQL for their upcoming SQL exam.",
-    `You are given a SQL concept and a difficulty level, the possible levels are: ${MOCK_QUESTION_DIFFICULTIES.map(
+    `You are given a SQL concept and a difficulty level, the possible levels are: ${QUESTION_DIFFICULTIES.map(
       (diff) => `"${diff}"`,
     ).join(", ")}.`,
     "Generate a real world business question for the user to solve using the Northwinds Database.",
@@ -138,7 +135,7 @@ export async function generateQuestion(
 
   // parse data
   const parsedFunctionCallData =
-    mockQuestionGeneratorResponseSchema.safeParse(functionCallDataJson);
+    questionGeneratorResponseSchema.safeParse(functionCallDataJson);
 
   // if invalid data, throw error
   if (!parsedFunctionCallData.success) {

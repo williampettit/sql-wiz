@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 
 import { SQL_CONCEPTS } from "@/data/sql-concepts";
 import {
-  MOCK_QUESTION_DIFFICULTIES,
-  type MockQuestionGeneratorFormValues,
-  mockQuestionGeneratorFormSchema,
+  QUESTION_DIFFICULTIES,
+  type QuestionGeneratorFormValues,
+  questionGeneratorFormSchema,
 } from "@/schemas/generate-question-schema";
 
 import { generateQuestion } from "@/server/actions/generate-question";
@@ -34,39 +34,46 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 
 type MockQuestionGeneratorFormProps = {
-  initialValues: Partial<MockQuestionGeneratorFormValues>;
+  defaultValues: Partial<QuestionGeneratorFormValues>;
 };
 
-export function QuestionGeneratorForm(
-  props: MockQuestionGeneratorFormProps,
-) {
+export function QuestionGeneratorForm({
+  defaultValues,
+}: MockQuestionGeneratorFormProps) {
   const router = useRouter();
 
-  const form = useForm<MockQuestionGeneratorFormValues>({
-    resolver: zodResolver(mockQuestionGeneratorFormSchema),
+  const form = useForm<QuestionGeneratorFormValues>({
+    resolver: zodResolver(questionGeneratorFormSchema),
     defaultValues: {
-      concept: props.initialValues.concept ?? undefined,
+      ...defaultValues,
+      concept: defaultValues.concept ?? undefined,
       difficulty: undefined,
       customInstructions: "",
     },
   });
 
-  async function onSubmit(values: MockQuestionGeneratorFormValues) {
-    console.log(values);
-
+  async function onSubmit(values: QuestionGeneratorFormValues) {
     toast({
       title: `Generating ${values.difficulty} ${values.concept} question...`,
       description: "This may take a few seconds...",
     });
 
-    const response = await generateQuestion(values);
+    generateQuestion(values)
+      .then((response) => {
+        toast({
+          title: "Generated question!",
+          description: "Redirecting you to the question page...",
+        });
 
-    toast({
-      title: "Generated question!",
-      description: "Redirecting you to the question page...",
-    });
-
-    router.push(`/saved-questions/${response.newQuestionId}`);
+        router.push(`/saved-questions/${response.newQuestionId}`);
+      })
+      .catch((error) =>
+        toast({
+          variant: "destructive",
+          title: "Failed to generate question",
+          description: error.message,
+        }),
+      );
   }
 
   const disabled = form.formState.isSubmitting || !form.formState.isValid;
@@ -112,7 +119,7 @@ export function QuestionGeneratorForm(
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {MOCK_QUESTION_DIFFICULTIES.map((difficulty) => (
+                  {QUESTION_DIFFICULTIES.map((difficulty) => (
                     <SelectItem key={difficulty} value={difficulty}>
                       {difficulty}
                     </SelectItem>

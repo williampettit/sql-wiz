@@ -1,9 +1,13 @@
-import { type Metadata } from "next/types";
+import { type Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Concepts",
 };
 
-export default function Layout({ children }: LayoutProps) {
-  return <>{children}</>;
+export default function Layout(props: LayoutProps) {
+  return (
+    <>
+      {props.children}
+    </>
+  );
 }

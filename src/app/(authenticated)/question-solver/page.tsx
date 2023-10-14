@@ -1,4 +1,4 @@
-import { type Metadata } from "next/types";
+import { type Metadata } from "next";
 
 import { Page } from "@/components/page";
 

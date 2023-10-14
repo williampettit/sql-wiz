@@ -2,28 +2,28 @@ import { z } from "zod";
 
 import { SQL_CONCEPTS } from "@/data/sql-concepts";
 
-export const MOCK_QUESTION_DIFFICULTIES = [
+export const QUESTION_DIFFICULTIES = [
   "easy",
   "medium",
   "hard",
-  "expert"
+  "expert",
 ] as const;
 
-export const mockQuestionGeneratorFormSchema = z.object({
+export const questionGeneratorFormSchema = z.object({
   concept: z.enum(["__NONE__", ...SQL_CONCEPTS.map((concept) => concept.name)]),
-  difficulty: z.enum(MOCK_QUESTION_DIFFICULTIES),
+  difficulty: z.enum(QUESTION_DIFFICULTIES),
   customInstructions: z.string().optional(),
 });
 
-export type MockQuestionGeneratorFormValues = z.infer<
-  typeof mockQuestionGeneratorFormSchema
+export type QuestionGeneratorFormValues = z.infer<
+  typeof questionGeneratorFormSchema
 >;
 
 //
 // (openai response schema)
 //
 
-export const mockQuestionGeneratorResponseSchema = z.object({
+export const questionGeneratorResponseSchema = z.object({
   title: z.string(),
   question: z.string(),
   answer: z.string(),
@@ -33,6 +33,6 @@ export const mockQuestionGeneratorResponseSchema = z.object({
   explanation: z.string(),
 });
 
-export type MockQuestionGeneratorResponse = z.infer<
-  typeof mockQuestionGeneratorResponseSchema
+export type QuestionGeneratorResponse = z.infer<
+  typeof questionGeneratorResponseSchema
 >;

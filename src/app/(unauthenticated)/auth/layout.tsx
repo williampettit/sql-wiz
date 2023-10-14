@@ -5,7 +5,7 @@ import { getServerSessionWrapper } from "@/server/auth";
 import { LogoText } from "@/components/logo-text";
 import { Separator } from "@/components/ui/separator";
 
-export default async function Layout({ children }: LayoutProps) {
+export default async function Layout(props: LayoutProps) {
   const session = await getServerSessionWrapper();
 
   if (session) {
@@ -18,7 +18,7 @@ export default async function Layout({ children }: LayoutProps) {
 
       <Separator />
 
-      {children}
+      {props.children}
     </div>
   );
 }

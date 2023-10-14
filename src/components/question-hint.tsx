@@ -9,7 +9,7 @@ type QuestionHintProps = {
   idx: number;
 };
 
-export function QuestionHint({ hint, idx }: QuestionHintProps) {
+export function QuestionHint(props: QuestionHintProps) {
   const [revealed, setRevealed] = useState<boolean>(false);
 
   return (
@@ -17,7 +17,9 @@ export function QuestionHint({ hint, idx }: QuestionHintProps) {
       onClick={() => setRevealed((prevRevealed) => !prevRevealed)}
       className="w-max"
     >
-      {revealed ? `Hint #${idx + 1}: ${hint}` : `Reveal Hint #${idx + 1}`}
+      {revealed
+        ? `Hint #${props.idx + 1}: ${props.hint}`
+        : `Reveal Hint #${props.idx + 1}`}
     </Badge>
   );
 }

@@ -22,28 +22,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 
-export function SettingsForm({
-  initialValues,
-}: {
-  initialValues: Partial<UserSettingsFormValues>;
-}) {
+type SettingsFormProps = {
+  defaultValues: Partial<UserSettingsFormValues>;
+};
+
+export function SettingsForm(props: SettingsFormProps) {
   const form = useForm<UserSettingsFormValues>({
     resolver: zodResolver(userSettingsFormSchema),
     defaultValues: {
-      ...initialValues,
+      ...props.defaultValues,
     },
   });
 
   async function onSubmit(values: UserSettingsFormValues) {
-    toast({
-      title: "Updating settings...",
-    });
+    toast({ title: "Updating settings..." });
 
-    await updateUserSettings(values);
-
-    toast({
-      title: "Updated settings!",
-    });
+    updateUserSettings(values)
+      .then(() =>
+        toast({
+          title: "Updated settings!",
+        }),
+      )
+      .catch((error) =>
+        toast({
+          variant: "destructive",
+          title: "Failed to update settings",
+          description: error.message,
+        }),
+      );
   }
 
   const disabled = form.formState.isSubmitting || !form.formState.isValid;

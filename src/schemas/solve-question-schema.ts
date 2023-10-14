@@ -4,9 +4,7 @@ export const questionSolverFormSchema = z.object({
   question: z.string(),
 });
 
-export type QuestionSolverFormValues = z.infer<
-  typeof questionSolverFormSchema
->;
+export type QuestionSolverFormValues = z.infer<typeof questionSolverFormSchema>;
 
 //
 // (openai response schema)

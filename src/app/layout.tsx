@@ -13,11 +13,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps) {
+export default function RootLayout(props: LayoutProps) {
   return (
     <html lang="en" className="scroll-smooth">
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>{props.children}</Providers>
       </body>
     </html>
   );

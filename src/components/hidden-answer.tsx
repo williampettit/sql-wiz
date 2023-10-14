@@ -11,8 +11,8 @@ type HiddenAnswerProps = {
   answer: string;
 };
 
-export function HiddenAnswer({ answer }: HiddenAnswerProps) {
-  answer = formatSql(answer, {
+export function HiddenAnswer(props: HiddenAnswerProps) {
+  const formattedAnswer = formatSql(props.answer, {
     tabWidth: 4,
     useTabs: false,
     keywordCase: "upper",
@@ -23,7 +23,7 @@ export function HiddenAnswer({ answer }: HiddenAnswerProps) {
   const [revealedLineNumbers, setRevealedLineNumbers] = useState<number[]>([]);
 
   return (
-    <Highlight theme={themes.vsDark} code={answer} language="sql">
+    <Highlight theme={themes.vsDark} code={formattedAnswer} language="sql">
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <pre
           style={style}

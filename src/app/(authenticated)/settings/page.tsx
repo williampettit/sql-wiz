@@ -1,4 +1,4 @@
-import { type Metadata } from "next/types";
+import { type Metadata } from "next";
 
 import { requireSession } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
@@ -26,7 +26,7 @@ export default async function SettingsPage() {
   return (
     <Page title="Settings" description="Update your settings.">
       <SettingsForm
-        initialValues={{
+        defaultValues={{
           openAiApiKey: initialValues.openAiApiKey,
         }}
       />

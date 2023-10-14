@@ -38,18 +38,26 @@ export function QuestionSolverForm() {
     console.log(values);
 
     toast({
-      title: `Solving question...`,
+      title: "Solving question...",
       description: "This may take a few seconds...",
     });
 
-    const response = await solveQuestion(values);
+    solveQuestion(values)
+      .then((response) => {
+        toast({
+          title: "Solved question!",
+          description: "Redirecting you to the answer page...",
+        });
 
-    toast({
-      title: "Solved question!",
-      description: "Redirecting you to the answer page...",
-    });
-
-    router.push(`/saved-questions/${response.newQuestionId}`);
+        router.push(`/saved-questions/${response.newQuestionId}`);
+      })
+      .catch((error) =>
+        toast({
+          variant: "destructive",
+          title: "Failed to solve question",
+          description: error.message,
+        }),
+      );
   }
 
   const disabled = form.formState.isSubmitting || !form.formState.isValid;

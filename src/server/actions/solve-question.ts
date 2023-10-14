@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import OpenAI from "openai";
 
 import { SQL_CONCEPTS } from "@/data/sql-concepts";
-import { MOCK_QUESTION_DIFFICULTIES } from "@/schemas/generate-question-schema";
+import { QUESTION_DIFFICULTIES } from "@/schemas/generate-question-schema";
 import {
   type QuestionSolverFormValues,
   questionSolverFormSchema,
@@ -16,16 +16,16 @@ import { requireOpenAiApiKey, requireSession } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
 
 export async function solveQuestion(inputData: QuestionSolverFormValues) {
+  const session = await requireSession();
+  const userOpenAiApiKey = await requireOpenAiApiKey();
+
   const parsedInputData = questionSolverFormSchema.safeParse(inputData);
 
   if (!parsedInputData.success) {
     throw new Error(parsedInputData.error.message);
   }
 
-  const session = await requireSession();
-
   // create openai client with user's api key
-  const userOpenAiApiKey = await requireOpenAiApiKey();
   const openaiClient = new OpenAI({
     apiKey: userOpenAiApiKey,
   });
@@ -84,7 +84,7 @@ export async function solveQuestion(inputData: QuestionSolverFormValues) {
             },
             difficulty: {
               type: "string",
-              enum: MOCK_QUESTION_DIFFICULTIES,
+              enum: QUESTION_DIFFICULTIES,
             },
             concept: {
               type: "string",
