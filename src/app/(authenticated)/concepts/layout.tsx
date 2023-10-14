@@ -5,9 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default function Layout(props: LayoutProps) {
-  return (
-    <>
-      {props.children}
-    </>
-  );
+  return <>{props.children}</>;
 }
